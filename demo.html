@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <title>Intergram Demo Page</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+    <style type="text/css">
+        body {
+            background-color: #f0f0f2;
+            margin: 10px;
+            padding: 0;
+            font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .main {
+            max-width: 600px;
+            margin: 5em auto;
+            padding: 50px;
+            background-color: #fff;
+            border-radius: 1em;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="main">
+    <h1>Intergram Demo Page</h1>
+    <p>Free live chat widget linked to your Telegram messenger. </p>
+
+    <p><a href="https://github.com/idoco/intergram">More information...</a></p>
+</div>
+
+<script>
+    window.intergramId = 312940879;
+    window.intergramServer = window.location.origin;
+    window.intergramCustomizations = {
+        titleClosed: 'Closed chat title',
+        titleOpen: 'Opened chat title',
+        introMessage: '123',
+        autoResponse: 'A message that is sent immediately after the user sends its first message',
+        autoNoResponse: 'A message that is sent one minute after the user sends its first message ' +
+        'and no response was received',
+        mainColor: "#42659e", // Can be any css supported color 'red', 'rgb(255,87,34)', etc
+        alwaysUseFloatingButton: false // Use the mobile floating button also on large screens
+    };
+</script>
+<script src="/js/widget.js"></script>
+
+</body>
+</html>
