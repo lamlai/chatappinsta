@@ -1,3 +1,20 @@
+export const globalStyle = {
+    fontFamily: '"Roboto", sans-serif'
+}
+
+
+export const desktopCloseWrapperStyle = {
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    zIndex: 2147483647,
+    borderRadius: '50px',
+    background: 'rgb(229, 229, 229)',
+    boxSizing: 'content-box',
+    boxShadow: '0px 0px 30px rgba(0, 0, 0, 0.5)',
+    overflow: 'hidden',
+    minWidth: 'auto',
+};
 
 export const desktopWrapperStyle = {
     position: 'fixed',
@@ -19,7 +36,7 @@ export const desktopClosedWrapperStyleChat = {
     minWidth: '400px',
     boxSizing: 'content-box',
     overflow: 'hidden',
-    minHeight: '120px'
+    minHeight: '120px',
 };
 
 export const mobileClosedWrapperStyle = {
@@ -47,15 +64,15 @@ export const mobileOpenWrapperStyle = {
 };
 
 export const desktopTitleStyle = {
-    height: '40px',
-    lineHeight: '30px',
-    fontSize: '20px',
+    height: '30px',
+    lineHeight: '25px',
+    fontSize: '18px',
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '5px 0 5px 20px',
-    fontFamily: 'Lato, sans-serif',
+    padding: '10px 0 5px 10px',
     color: '#fff',
     cursor: 'pointer',
+    fontWeight: 300
 };
 
 export const mobileTitleStyle = {
@@ -69,3 +86,25 @@ export const mobileTitleStyle = {
     webkitBoxShadow: '1px 1px 4px rgba(101,119,134,.75)',
     boxShadow: '1px 1px 4px rgba(101,119,134,.75)'
 };
+
+export const wrapTextOnCloseInputStyle = {
+    width: '100%',
+    display: 'block',
+    border: 'none',
+    height: '37px',
+    zIndex: 99,
+    background: '#fafafa',
+    outline: 'none',
+    paddingLeft: '15px',
+    paddingRight: '45px',
+    color: '#666',
+    fontWeight: 400,
+    boxSizing: 'border-box'
+}
+
+export const wrapTextOnCloseBtnStyle = {
+    position: 'absolute',
+    bottom: '10px',
+    right: '10px',
+    color: '#666'
+}
