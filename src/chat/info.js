@@ -24,7 +24,7 @@ export default class Info extends Component {
     componentDidMount() {
         const { socket, chatId } = this.props;
         this.socket = socket;
-        axios.get('http://localhost:3000/customer/1/'+chatId)
+        axios.get('/customer/1/'+chatId)
             .then(response => {
                 const customer = response.data;
                 if (customer && customer.Code != 200) {
