@@ -1,6 +1,8 @@
 import { h, render } from 'preact';
 import Widget from './widget';
 import {defaultConfiguration} from './default-configuration';
+import axios from 'axios';
+import moment from 'moment'
 
 if (window.attachEvent) {
     window.attachEvent('onload', injectChat);
@@ -9,32 +11,104 @@ if (window.attachEvent) {
 }
 
 function injectChat() {
-    if (!window.intergramId) {
-        console.error('Please set window.intergramId (see example at github.com/idoco/intergram)');
+    if (!window.sourceServer) {
+        console.error('Please set window.desinationId');
     } else {
         let root = document.createElement('div');
         root.id = 'intergramRoot';
         document.getElementsByTagName('body')[0].appendChild(root);
-        const server = window.intergramServer || 'https://www.intergram.xyz';
+        const urlReuquest = window.location.hostname ;
+        const server = window.sourceServer;
         const iFrameSrc = server + '/chat.html';
         const host = window.location.host || 'unknown-host';
-        const conf = { ...defaultConfiguration, ...window.intergramCustomizations };
+        let conf = { ...defaultConfiguration, ...window.intergramCustomizations };
+        conf.urlRequest = urlReuquest
 
-        render(
-            <Widget intergramId={window.intergramId}
-                    host={host}
-                    isMobile={window.screen.width < 500}
-                    iFrameSrc={iFrameSrc}
-                    conf={conf}
-            />,
-            root
-        );
+        axios.get('/website/'+urlReuquest)
+            .then((response)=>{
+                if (response && response.status == 200) {
+                    let data = response.data;
+                    if (data.Code == 200) {
+                        if (data.Data.expire_date) {
+                            const expireDate = moment(data.Data.expire_date).locale('vi').format('YYYY-MM-DD')
+                            const today = moment().locale('vi').format('YYYY-MM-DD')
+                            if (today <= expireDate) {
+                                render(
+                                    <Widget destinationId={window.destinationId}
+                                            host={host}
+                                            isMobile={window.screen.width < 500}
+                                            iFrameSrc={iFrameSrc}
+                                            conf={conf}
+                                    />,
+                                    root
+                                );
 
-        try {
-            const request = new XMLHttpRequest();
-            request.open('POST', server + '/usage-start?host=' + host);
-            request.send();
-        } catch (e) { /* Fail silently */ }
+                                try {
+                                    const request = new XMLHttpRequest();
+                                    request.open('POST', server + '/usage-start?host=' + host);
+                                    request.send();
+                                } catch (e) { /* Fail silently */ }
+                            } else {
+                                axios.get('/check_allow')
+                                    .then((response)=>{
+                                        if (response && response.status == 200) {
+                                            let data = response.data;
+                                            if (data.Code == 200) {
+                                                if (data.Data.isGlobal == true) {
+                                                    render(
+                                                        <Widget destinationId={window.destinationId}
+                                                                host={host}
+                                                                isMobile={window.screen.width < 500}
+                                                                iFrameSrc={iFrameSrc}
+                                                                conf={conf}
+                                                        />,
+                                                        root
+                                                    );
+
+                                                    try {
+                                                        const request = new XMLHttpRequest();
+                                                        request.open('POST', server + '/usage-start?host=' + host);
+                                                        request.send();
+                                                    } catch (e) { /* Fail silently */ }
+                                                }
+                                            }
+                                        }
+                                    })
+                            }
+                        }
+                    } else {
+                        axios.get('/check_allow')
+                            .then((response)=>{
+                                if (response && response.status == 200) {
+                                    let data = response.data;
+                                    if (data.Code == 200) {
+                                        if (data.Data.isGlobal == true) {
+                                            render(
+                                                <Widget destinationId={window.destinationId}
+                                                        host={host}
+                                                        isMobile={window.screen.width < 500}
+                                                        iFrameSrc={iFrameSrc}
+                                                        conf={conf}
+                                                />,
+                                                root
+                                            );
+
+                                            try {
+                                                const request = new XMLHttpRequest();
+                                                request.open('POST', server + '/usage-start?host=' + host);
+                                                request.send();
+                                            } catch (e) { /* Fail silently */ }
+                                        }
+                                    }
+                                }
+                            })
+                    }
+                }
+            })
+
+
+
+
 
     }
 
