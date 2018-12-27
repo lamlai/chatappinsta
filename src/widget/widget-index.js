@@ -29,7 +29,7 @@ function injectChat() {
                 if (response && response.status == 200) {
                     let data = response.data;
                     if (data.Code == 200) {
-                        if (data.Data.expire_date) {
+                        if (data.Data.expire_date && data.Data.expire_date != null) {
                             const expireDate = moment(data.Data.expire_date).locale('vi').format('YYYY-MM-DD')
                             const today = moment().locale('vi').format('YYYY-MM-DD')
                             if (today <= expireDate) {
