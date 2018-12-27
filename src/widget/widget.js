@@ -101,7 +101,7 @@ export default class Widget extends Component {
                             <div onClick={this.onClick}>
                                 <div style={{background: conf.mainColor, ...desktopTitleStyle}} >
                                     <div style={{display: 'block', alignItems: 'center', padding: '0px 10px 0px 0px'}}>
-                                        <div class="test">
+                                        <div>
                                             <BubbleChatIcon isOpened={isChatOpen}/> {isChatOpen ? conf.titleOpen : conf.titleClosed}
                                         </div>
                                     </div>
