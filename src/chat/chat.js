@@ -87,7 +87,7 @@ export default class Chat extends Component {
         const data = new FormData()
         data.append('file', this.state.selectedFile, this.state.selectedFile.name)
         axios
-            .post('/customer/upload/' + this.props.conf.urlRequest + '/' + this.props.userId, data, {
+            .post(this.props.conf.requestServer+'/customer/upload/' + this.props.conf.urlRequest + '/' + this.props.userId, data, {
                 onUploadProgress: ProgressEvent => {
                     this.setState({
                         loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),

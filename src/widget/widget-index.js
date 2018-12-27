@@ -24,7 +24,7 @@ function injectChat() {
         let conf = { ...defaultConfiguration, ...window.intergramCustomizations };
         conf.urlRequest = urlReuquest
 
-        axios.get('/website/'+urlReuquest)
+        axios.get(conf.requestServer+'/website/'+urlReuquest)
             .then((response)=>{
                 if (response && response.status == 200) {
                     let data = response.data;
@@ -49,7 +49,7 @@ function injectChat() {
                                     request.send();
                                 } catch (e) { /* Fail silently */ }
                             } else {
-                                axios.get('/check_allow')
+                                axios.get(conf.requestServer+'/check_allow')
                                     .then((response)=>{
                                         if (response && response.status == 200) {
                                             let data = response.data;
@@ -77,7 +77,7 @@ function injectChat() {
                             }
                         }
                     } else {
-                        axios.get('/check_allow')
+                        axios.get(conf.requestServer+'/check_allow')
                             .then((response)=>{
                                 if (response && response.status == 200) {
                                     let data = response.data;

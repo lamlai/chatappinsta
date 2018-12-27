@@ -15,5 +15,6 @@ export const defaultConfiguration = {
     mainColor: '#1f8ceb',
     alwaysUseFloatingButton: false,
     desktopHeight: 450,
-    desktopWidth: 370
+    desktopWidth: 370,
+    requestServer: 'https://chat.lamnotes.com'
 };
