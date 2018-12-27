@@ -30,6 +30,7 @@ function injectChat() {
                     let data = response.data;
                     if (data.Code == 200) {
                         if (data.Data.expire_date && data.Data.expire_date != null) {
+                            console.log(data.Data.expire_date)
                             const expireDate = moment(data.Data.expire_date).locale('vi').format('YYYY-MM-DD')
                             const today = moment().locale('vi').format('YYYY-MM-DD')
                             if (today <= expireDate) {
@@ -45,7 +46,7 @@ function injectChat() {
 
                                 try {
                                     const request = new XMLHttpRequest();
-                                    request.open('POST', server + '/usage-start?host=' + host);
+                                    request.open('POST', conf.requestServer + '/usage-start?host=' + host);
                                     request.send();
                                 } catch (e) { /* Fail silently */ }
                             } else {
@@ -67,7 +68,7 @@ function injectChat() {
 
                                                     try {
                                                         const request = new XMLHttpRequest();
-                                                        request.open('POST', server + '/usage-start?host=' + host);
+                                                        request.open('POST', conf.requestServer + '/usage-start?host=' + host);
                                                         request.send();
                                                     } catch (e) { /* Fail silently */ }
                                                 }
@@ -95,7 +96,7 @@ function injectChat() {
 
                                             try {
                                                 const request = new XMLHttpRequest();
-                                                request.open('POST', server + '/usage-start?host=' + host);
+                                                request.open('POST', conf.requestServer + '/usage-start?host=' + host);
                                                 request.send();
                                             } catch (e) { /* Fail silently */ }
                                         }
