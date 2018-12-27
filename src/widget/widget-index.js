@@ -17,14 +17,13 @@ function injectChat() {
         let root = document.createElement('div');
         root.id = 'intergramRoot';
         document.getElementsByTagName('body')[0].appendChild(root);
-        const urlReuquest = window.location.hostname ;
-        const server = window.sourceServer;
-        const iFrameSrc = server + '/chat.html';
+        const urlRequest = window.location.hostname ;
         const host = window.location.host || 'unknown-host';
         let conf = { ...defaultConfiguration, ...window.intergramCustomizations };
-        conf.urlRequest = urlReuquest
+        conf.urlRequest = urlRequest;
+        const iFrameSrc = conf.requestServer + '/chat.html';
 
-        axios.get(conf.requestServer+'/website/'+urlReuquest)
+        axios.get(conf.requestServer+'/website/'+urlRequest)
             .then((response)=>{
                 if (response && response.status == 200) {
                     let data = response.data;
