@@ -46,8 +46,8 @@ export default class Info extends Component {
                         <span class={'close-btn'} dangerouslySetInnerHTML={{ __html: i.html }} onClick={this.closeFormInfo}></span>
                         <form id={'formCustomerInformation'} onSubmit={this.handleSubmitFormCustomerInfo}>
                             <p style={InforWrapperTextStyle}>{conf.getCustomerInfoText}</p>
-                            <input type={'input'} placeholder={'Họ và tên'} name="CustomerName" value={this.state.fullname} onChange={this.handleFullNameChange} style={InfoWrapperFormInputStyle} />
-                            <input type={'email'} placeholder={'Email'} name="CustomerEmail" value={this.state.email} onChange={this.handleEmailChange} style={InfoWrapperFormSecondInputStyle} />
+                            <input type={'input'} placeholder="Họ và tên" name="CustomerName" value={this.state.fullname} onChange={this.handleFullNameChange} style={InfoWrapperFormInputStyle} />
+                            <input type={'email'} placeholder="Email" name="CustomerEmail" value={this.state.email} onChange={this.handleEmailChange} style={InfoWrapperFormSecondInputStyle} />
                             <input class={'btn'} type={'submit'} value={'Gửi'} style={InfoWrapperFormSubmitStyle} />
                         </form>
                     </div>
