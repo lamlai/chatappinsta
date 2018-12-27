@@ -131,20 +131,16 @@ function sendTelegramFile(chatId, file, customer, parseMode='Markdown') {
     return rsp;
 }
 
-app.post('/usage-start', cors(), function (req, res) {
+app.post('/usage-start', function (req, res) {
     console.log('usage from', req.query.host);
     res.statusCode = 200;
     res.end();
 });
 
 // left here until the cache expires
-app.post('/usage-end', cors(), function (req, res) {
+app.post('/usage-end', function (req, res) {
     res.statusCode = 200;
     res.end();
-});
-
-http.listen(process.env.PORT || 3000, function () {
-    console.log('listening on port:' + (process.env.PORT || 3000));
 });
 
 app.get('/.well-known/acme-challenge/:content', (req, res) => {
@@ -295,3 +291,7 @@ app.get('/check_allow', (req, res) => {
     })
 
 })
+
+http.listen(process.env.PORT || 3000, function () {
+    console.log('listening on port:' + (process.env.PORT || 3000));
+});
