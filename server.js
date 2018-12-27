@@ -115,11 +115,11 @@ function sendTelegramMessage(chatId, text, parseMode) {
     return rsp;
 }
 
-function sendTelegramFile(chatId, file, customer, parseMode='Markdown') {
+function sendTelegramFile(chatId, file, customerId , customer, parseMode='Markdown') {
     const formData = {
         chat_id: chatId,
         document: fs.createReadStream(file),
-        caption: '*'+ customer + '* Đã gửi file đính kèm',
+        caption: customerId+' - *'+ customer + '* Đã gửi file đính kèm',
         parse_mode: parseMode
     }
     let rsp = request
@@ -223,7 +223,7 @@ app.post('/customer/upload/:domain/:customer_id', (req, res, next) => {
                             return res.status(500).send(err)
                         } else {
                             console.log(savedFile);
-                            const sendImage = sendTelegramFile(chatId, savedFile, customerName)
+                            const sendImage = sendTelegramFile(chatId, savedFile, customerId ,customerName)
                             res.json({
                                 file: savedFile,
                             })
