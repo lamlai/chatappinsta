@@ -18,25 +18,30 @@ app.use(fileUpload());
 // handle admin Telegram messages
 app.post('/hook', function (req, res) {
     try {
-        const message = req.body.message || req.body.channel_post;
-        const chatId = message.chat.id;
-        const name = message.chat.first_name + ' ' + message.chat.last_name || message.chat.title || 'admin';
-        const text = message.text || '';
-        const reply = message.reply_to_message;
-        if (text.startsWith('/start')) {
-            console.log('/start chatId ' + chatId);
-            sendTelegramMessage(chatId,
-                '*Welcome to ASC Chat* \n' +
-                'Your unique chat id is `' + chatId + '`',
-                'Markdown');
-        } else if (reply) {
-            let replyText = reply.text || '';
-            let userId = replyText.split(':')[0];
-            userId = userId.split(' - ')[0];
-            io.emit(chatId + '-' + userId, {name, text, from: 'admin'});
-        } else if (text) {
-            io.emit(chatId, {name, text, from: 'admin'});
+        if(req.body.callback_query) {
+            handleUpdateStatusBillForWeb(req.body.callback_query)
+        } else {
+            const message = req.body.message || req.body.channel_post;
+            const chatId = message.chat.id;
+            const name = message.chat.first_name + ' ' + message.chat.last_name || message.chat.title || 'admin';
+            const text = message.text || '';
+            const reply = message.reply_to_message;
+            if (text.startsWith('/start')) {
+                console.log('/start chatId ' + chatId);
+                sendTelegramMessage(chatId,
+                    '*Welcome to ASC Chat* \n' +
+                    'Your unique chat id is `' + chatId + '`',
+                    'Markdown');
+            } else if (reply) {
+                let replyText = reply.text || '';
+                let userId = replyText.split(':')[0];
+                userId = userId.split(' - ')[0];
+                io.emit(chatId + '-' + userId, {name, text, from: 'admin'});
+            } else if (text) {
+                io.emit(chatId, {name, text, from: 'admin'});
+            }
         }
+
     } catch (e) {
         console.error('hook error', e, req.body);
     }
@@ -115,6 +120,13 @@ function sendTelegramMessage(chatId, text, parseMode) {
     return rsp;
 }
 
+function sendTelegramBride(form) {
+    let rsp = request
+        .post('https://api.telegram.org/bot' + process.env.TELEGRAM_TOKEN + '/sendMessage')
+        .form(form);
+    return rsp;
+}
+
 function sendTelegramFile(chatId, file, customerId , customer, parseMode='Markdown') {
     const formData = {
         chat_id: chatId,
@@ -130,6 +142,29 @@ function sendTelegramFile(chatId, file, customerId , customer, parseMode='Markdo
             }
         })
     return rsp;
+}
+
+function handleUpdateStatusBillForWeb(data) {
+    const params = data.data.split('||')
+    const apiAction = '/index.php?rest_route=/toi-route/update-order-status';
+    const fullUrlRequest = params[0]+apiAction;
+    const chatId = data.message.chat.id || data.from.id;
+    let form = {
+        key: params[1],
+        confirm: params[2]
+    }
+    request
+        .post({
+            url: fullUrlRequest,
+            form: form
+        }, function (error, response, body) {
+            body = JSON.parse(body);
+            if (body.Code && body.Code == 200) {
+                sendTelegramMessage(chatId,body.Message + ' \n Người thao tác: '+data.from.first_name + ' '+data.from.last_name, 'Markdown')
+            } else {
+                sendTelegramMessage(chatId, 'Có lỗi trong quá trình thao tác, xin vui lòng thử lại')
+            }
+        })
 }
 
 app.post('/usage-start', function (req, res) {
@@ -291,6 +326,19 @@ app.get('/check_allow', (req, res) => {
         }
     })
 
+})
+
+app.post('/send-order', (req, res) => {
+    let rsp = {
+        'Code': 400,
+        'Success': 0,
+        'Data': {}
+    }
+    if (req.body.chat_id) {
+        sendTelegramBride(req.body)
+        rsp.Code = 200
+    }
+    res.json(rsp);
 })
 
 http.listen(process.env.PORT || 3000, function () {
