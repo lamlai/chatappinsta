@@ -82,7 +82,7 @@ io.on('connection', function (client) {
                 customer.then(function (customer) {
                     let visitorName = userId;
                     if (customer) {
-                        visitorName = customer.fullname
+                        visitorName = customer.fullname + ' - ' + customer.email
                     }
                     messageReceived = true;
                     io.emit(chatId + '-' + userId, msg);
