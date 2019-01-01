@@ -46,14 +46,19 @@ export default class Widget extends Component {
                         checkElement.classList.add(classBigWidgetName)
                         checkElement.style.borderRadius = '5px'
                         checkElement.style.minWidth = '250px'
-                        document.getElementById('wrap-text-on-close').style.display = 'block'
+                        if ( document.getElementById('wrap-text-on-close')) {
+                            document.getElementById('wrap-text-on-close').style.display = 'block'
+                        }
                     }
                 } else {
                     if (checkElement.classList.contains(classBigWidgetName)) {
                         checkElement.classList.remove(classBigWidgetName)
                         checkElement.style.borderRadius = '50px'
                         checkElement.style.minWidth = 'auto'
-                        document.getElementById('wrap-text-on-close').style.display = 'none'
+                        if ( document.getElementById('wrap-text-on-close')) {
+                            document.getElementById('wrap-text-on-close').style.display = 'none'
+                        }
+
                     }
                 }
             }
@@ -138,7 +143,10 @@ export default class Widget extends Component {
             this.setCookie();
             stateData.wasChatOpened = true;
         }
-        document.getElementById('wrap-text-on-close').style.display = 'none'
+        if (document.getElementById('wrap-text-on-close')) {
+            document.getElementById('wrap-text-on-close').style.display = 'none'
+        }
+
         this.setState(stateData);
     }
 
