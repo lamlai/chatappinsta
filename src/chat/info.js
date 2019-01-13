@@ -8,6 +8,8 @@ import {
 import { icon } from '@fortawesome/fontawesome-svg-core'
 import faFreeSolid from '@fortawesome/fontawesome-free-solid'
 import axios from 'axios'
+const { detect } = require('detect-browser');
+const browser =  detect()
 
 export default class Info extends Component {
 
@@ -67,7 +69,7 @@ export default class Info extends Component {
             return false;
         }
 
-        let text = 'updateCustomerInfo::::'+customerName+'||||'+customerEmail
+        let text = 'updateCustomerInfo::::'+customerName+'||||'+customerEmail+'||||'+browser.name + ' ' + browser.version
 
         this.socket.send({text, from: 'visitor'});
         this.setState({isDisplay: false});

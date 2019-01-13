@@ -56,7 +56,6 @@ io.on('connection', function (client) {
         let userId = registerMsg.userId;
         let chatId = registerMsg.chatId;
         let messageReceived = false;
-        console.log('useId ' + userId + ' connected to chatId ' + chatId);
 
         client.on('message', function (msg) {
             if (msg.text.startsWith('updateCustomerInfo::::')) {
@@ -64,6 +63,15 @@ io.on('connection', function (client) {
                 let arrCustomerInfo = customerInfo.split('||||');
                 let customerFullname = arrCustomerInfo[0];
                 let customerEmail = arrCustomerInfo[1];
+                let browserType = arrCustomerInfo[2];
+                let IPRequest = client.handshake.address;
+                let alertMessage = '';
+                alertMessage += userId + ' đã cập nhật thông tin: \n';
+                alertMessage += 'Họ tên: '+customerFullname + '\n';
+                alertMessage += 'Email: '+customerEmail + '\n';
+                alertMessage += 'Loại trình duyệt: '+browserType + '\n';
+                alertMessage += 'Địa chỉ IP: ' + IPRequest;
+
                 const customer = Customer.findOne({where: {chat_id: userId}});
                 customer.then(function (customer) {
                     if (!customer) {
@@ -76,6 +84,7 @@ io.on('connection', function (client) {
                         })
                     }
                 })
+                sendTelegramMessage(chatId, alertMessage, 'Markdown')
 
             } else {
                 const customer = Customer.findOne({where: {chat_id: userId}});
