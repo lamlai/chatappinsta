@@ -42,11 +42,13 @@ export const desktopClosedWrapperStyleChat = {
 export const mobileClosedWrapperStyle = {
     position: 'fixed',
     bottom: 18,
-    right: 18,
-    zIndex: 2147483647,
-    borderRadius: '50%',
+    right: 15,
+    zIndex: 999999999,
+    borderRadius: '50px',
     background: 'rgb(229, 229, 229)',
-    boxSizing: 'content-box'
+    boxSizing: 'content-box',
+    overflow: 'hidden',
+    transition: 0.5
 };
 
 export const mobileOpenWrapperStyle = {
@@ -55,7 +57,7 @@ export const mobileOpenWrapperStyle = {
     right: 0,
     bottom: 0,
     left: 0,
-    zIndex: 2147483647,
+    zIndex: 99999999,
     width: '100%',
     height: '100%',
     background: 'rgb(229, 229, 229)',
@@ -106,4 +108,22 @@ export const wrapTextOnCloseBtnStyle = {
     bottom: '10px',
     right: '10px',
     color: '#666'
+}
+
+export const wrapCloseBtnStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    color: '#fff',
+}
+
+export const wrapCloseBtnTitleMobile = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    color: '#fff'
+}
+
+export const hiddenClass =  {
+    display: 'none'
 }

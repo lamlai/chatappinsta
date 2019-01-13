@@ -17,7 +17,8 @@ const sequelize = new Sequelize(dbName, dbUser, dbPass, {
         acquire: 30000,
         idle: 10000
     },
-    logging: false
+    logging: false,
+    operatorsAliases: false
 })
 
 

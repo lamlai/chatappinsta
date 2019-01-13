@@ -13,10 +13,14 @@ import {
     desktopClosedWrapperStyleChat,
     wrapTextOnCloseInputStyle,
     wrapTextOnCloseBtnStyle,
-    globalStyle
+    globalStyle,
+    wrapCloseBtnStyle,
+    wrapCloseBtnTitleMobile,
+    hiddenClass
 } from "./style";
 import {icon} from '@fortawesome/fontawesome-svg-core/index';
 import faFreeRegular from '@fortawesome/fontawesome-free-regular/index';
+import faFreeSolid from '@fortawesome/fontawesome-free-solid/index';
 
 export default class Widget extends Component {
 
@@ -45,7 +49,12 @@ export default class Widget extends Component {
                     if (!checkElement.classList.contains(classBigWidgetName)) {
                         checkElement.classList.add(classBigWidgetName)
                         checkElement.style.borderRadius = '5px'
-                        checkElement.style.minWidth = '250px'
+                        if (checkElement.getAttribute('data-mobile') == 'mobile') {
+                            checkElement.style.minWidth = 'calc(100% - 30px)';
+                        } else {
+                            checkElement.style.minWidth = '250px'
+                        }
+
                         if ( document.getElementById('wrap-text-on-close')) {
                             document.getElementById('wrap-text-on-close').style.display = 'block'
                         }
@@ -91,15 +100,32 @@ export default class Widget extends Component {
         const iconPaperPlan = faFreeRegular.faPaperPlane;
         const paperPlan = icon(iconPaperPlan);
 
+        const iconCLose = faFreeSolid.faTimes;
+        const closeBtn = icon(iconCLose);
+
+        let classCloseBtn = (isMobile) ? wrapCloseBtnTitleMobile : hiddenClass;
+
         return (
             <div style={globalStyle}>
-                <div id="wrap-click" style={wrapperStyle} class={isChatOpen ? 'isOpen': ''}>
+                <div id="wrap-click" style={wrapperStyle} class={isChatOpen ? 'isOpen': ''} data-mobile={isMobile ? 'mobile' : 'desktop'}>
                     <link rel='stylesheet' src='https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,800&amp;subset=vietnamese' />
                     {/* Open/close button */}
-                    { (isMobile || conf.alwaysUseFloatingButton) && !isChatOpen ?
+                    { isMobile && !isChatOpen ?
 
-                        <ChatFloatingButton color={conf.mainColor} onClick={this.onClick}/>
-
+                        <div onClick={this.onClick}>
+                            <div style={{background: conf.mainColor, ...desktopTitleStyle}} >
+                                <div style={{display: 'block', alignItems: 'center', padding: '0px 10px 0px 0px'}}>
+                                    <div>
+                                        <BubbleChatIcon isOpened={isChatOpen}/> {isChatOpen ? conf.titleOpen : conf.titleClosed}
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="wrap-text-on-close" style="width:100%; display:none">
+                                <input type="text" style={wrapTextOnCloseInputStyle} placeholder="Trả lời..."/>
+                                <span style={wrapTextOnCloseBtnStyle} class="btn-send-message" dangerouslySetInnerHTML={{ __html: paperPlan.html }}></span>
+                                <span id="close-btn-mobile" style={wrapCloseBtnStyle} class="btn-close-icon" dangerouslySetInnerHTML={{ __html: closeBtn.html }}></span>
+                            </div>
+                        </div>
                         :
 
                         (conf.closedStyle === 'chat' || isChatOpen || this.wasChatOpened()) ?
@@ -108,17 +134,20 @@ export default class Widget extends Component {
                                     <div style={{display: 'block', alignItems: 'center', padding: '0px 10px 0px 0px'}}>
                                         <div>
                                             <BubbleChatIcon isOpened={isChatOpen}/> {isChatOpen ? conf.titleOpen : conf.titleClosed}
+                                            <span id="close-btn-mobile" style={classCloseBtn} class="btn-close-icon" dangerouslySetInnerHTML={{ __html: closeBtn.html }}></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="wrap-text-on-close" style="width:100%; display:none">
                                     <input type="text" style={wrapTextOnCloseInputStyle} placeholder="Trả lời..."/>
-                                    <span style={wrapTextOnCloseBtnStyle} class="btn-send-message" dangerouslySetInnerHTML={{ __html: paperPlan.html }}></span>
+
                                 </div>
                             </div>
 
                             :
+
                             <ChatTitleMsg onClick={this.onClick} conf={conf}/>
+
                     }
 
                     {/*Chat IFrame*/}
@@ -145,6 +174,7 @@ export default class Widget extends Component {
         }
         if (document.getElementById('wrap-text-on-close')) {
             document.getElementById('wrap-text-on-close').style.display = 'none'
+            document.getElementById('wrap-click').style.minWidth = 'auto'
         }
 
         this.setState(stateData);
