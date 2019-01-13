@@ -64,7 +64,7 @@ io.on('connection', function (client) {
                 let customerFullname = arrCustomerInfo[0];
                 let customerEmail = arrCustomerInfo[1];
                 let browserType = arrCustomerInfo[2];
-                let IPRequest = client.handshake.address;
+                let IPRequest = client.request.connection.remoteAddress;
                 let alertMessage = '';
                 alertMessage += userId + ' đã cập nhật thông tin: \n';
                 alertMessage += 'Họ tên: '+customerFullname + '\n';
