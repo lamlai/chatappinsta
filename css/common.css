@@ -1,3 +1,7 @@
+html {
+    overflow-y: scroll;
+}
+
 textarea:focus,
 input:focus,
 .formCustomerInformation input[type="text"]:focus,

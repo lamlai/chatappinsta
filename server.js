@@ -37,8 +37,6 @@ app.post('/hook', function (req, res) {
                 let userId = replyText.split(':')[0];
                 userId = userId.split(' - ')[0];
                 io.emit(chatId + '-' + userId, {name, text, from: 'admin'});
-            } else if (text) {
-                io.emit(chatId, {name, text, from: 'admin'});
             }
         }
 
