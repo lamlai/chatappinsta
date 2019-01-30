@@ -62,9 +62,11 @@ io.on('connection', function (client) {
                 let customerFullname = arrCustomerInfo[0];
                 let customerEmail = arrCustomerInfo[1];
                 let browserType = arrCustomerInfo[2];
+                let customerPhone = arrCustomerInfo[3];
                 let alertMessage = '';
                 alertMessage += userId + ' đã cập nhật thông tin: \n';
                 alertMessage += 'Họ tên: '+customerFullname + '\n';
+                alertMessage += 'Số điện thoại: '+customerPhone + '\n';
                 alertMessage += 'Email: '+customerEmail + '\n';
                 alertMessage += 'Loại trình duyệt: '+browserType + '\n';
 
@@ -74,6 +76,7 @@ io.on('connection', function (client) {
                         Customer.create({
                             fullname: customerFullname,
                             email: customerEmail,
+                            phone: customerPhone,
                             chat_id: userId,
                             target_chat_id: chatId,
                             website_id: 1

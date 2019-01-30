@@ -11,6 +11,9 @@ module.exports = (sequelize, type) => {
         email: {
             type: type.STRING
         },
+        phone: {
+            type: type.STRING
+        },
         chat_id: {
             type: type.STRING
         },

@@ -16,6 +16,7 @@ export default class Info extends Component {
     state = {
         email: '',
         fullname: '',
+        phone: '',
         isDisplay: false
     }
     constructor(props) {
@@ -49,6 +50,7 @@ export default class Info extends Component {
                         <form id={'formCustomerInformation'} onSubmit={this.handleSubmitFormCustomerInfo}>
                             <p style={InforWrapperTextStyle}>{conf.getCustomerInfoText}</p>
                             <input type={'input'} placeholder="Họ và tên" name="CustomerName" value={this.state.fullname} onChange={this.handleFullNameChange} style={InfoWrapperFormInputStyle} />
+                            <input type={'input'} placeholder="Số điện thoại" name="CustomerPhone" value={this.state.phone} onChange={this.handlePhoneChange} style={InfoWrapperFormInputStyle} />
                             <input type={'email'} placeholder="Email" name="CustomerEmail" value={this.state.email} onChange={this.handleEmailChange} style={InfoWrapperFormSecondInputStyle} />
                             <input class={'btn'} type={'submit'} value={'Gửi'} style={InfoWrapperFormSubmitStyle} />
                         </form>
@@ -64,12 +66,13 @@ export default class Info extends Component {
         e.preventDefault();
         let customerName = this.state.fullname.trim();
         let customerEmail = this.state.email.trim();
-        if (!customerName || !customerEmail) {
+        let customerPhone = this.state.phone.trim();
+        if (!customerName || !customerEmail || !customerPhone) {
             alert('Bạn chưa nhập đủ thông tin');
             return false;
         }
 
-        let text = 'updateCustomerInfo::::'+customerName+'||||'+customerEmail+'||||'+browser.name + ' ' + browser.version
+        let text = 'updateCustomerInfo::::'+customerName+'||||'+customerEmail+'||||'+browser.name + '||||' + customerPhone
 
         this.socket.send({text, from: 'visitor'});
         this.setState({isDisplay: false});
@@ -83,8 +86,23 @@ export default class Info extends Component {
         this.setState({fullname: e.target.value});
     }
 
+    handlePhoneChange = (e) => {
+        if (this.checkIsPhone(e.target.value)) {
+            this.setState({phone: e.target.value});
+        } else {
+            alert('Số điện thoại không đúng, xin vui lòng nhập lại');
+            e.target.value = '';
+        }
+
+    }
+
     closeFormInfo = (e) => {
         this.setState({isDisplay: false});
+    }
+
+    checkIsPhone = (str) => {
+        let patt = new RegExp(/^\+?1?\s*?\(?\d{3}(?:\)|[-|\s])?\s*?\d{3}[-|\s]?\d{4}$/);
+        return patt.test(str);
     }
 
 }
