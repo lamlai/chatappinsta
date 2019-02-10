@@ -115,7 +115,7 @@ export default class Widget extends Component {
         const iconCLose = faFreeSolid.faTimes;
         const closeBtn = icon(iconCLose);
 
-        const avatar = conf.closedChatAvatarUrl ? conf.closedChatAvatarUrl : '/media/avatar.png';
+        const avatar = conf.closedChatAvatarUrl ? conf.closedChatAvatarUrl : 'https://api.telegrchat.com/media/avatar.png/media/avatar.png';
 
         let classCloseBtn = (isMobile) ? wrapCloseBtnTitleMobile : hiddenClass;
 

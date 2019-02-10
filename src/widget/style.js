@@ -74,7 +74,7 @@ export const desktopTitleStyle = {
     fontSize: '18px',
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '10px 0 5px 10px',
+    padding: '10px 0 10px 10px',
     color: '#fff',
     cursor: 'pointer',
     fontWeight: 300
