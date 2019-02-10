@@ -194,8 +194,8 @@ a.banner {
 .power_by_style {
     display: block;
     width: 98%;
-    position: absolute;
-    bottom: 28px;
+    position: fixed;
+    bottom: 38px;
     padding: 3px;
     text-align: center;
     color: #96aab4;
