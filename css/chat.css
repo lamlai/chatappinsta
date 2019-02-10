@@ -190,3 +190,17 @@ a.banner {
 .btn-send-file {
     right: 30px;
 }
+
+.power_by_style {
+    display: block;
+    width: 98%;
+    position: absolute;
+    bottom: 28px;
+    padding: 3px;
+    text-align: center;
+    color: #96aab4;
+    font-size: 10px;
+    text-decoration: none;
+    opacity: 0.5;
+    z-index: 100;
+}

@@ -47,6 +47,7 @@ export default class Chat extends Component {
                 <MessageArea messages={state.messages} conf={this.props.conf}/>
                 <Info pristine={this.state.autoResponseState} conf={this.props.conf} targetChatId={this.props.chatId}
                       chatId={this.props.userId} socket={this.socket}/>
+                <a href={'https://telegrchat.com/'} target={'_blank'} class={'power_by_style'} style={{display:  this.props.conf.isFree ? 'block' : 'none' }}>⚡️ by TelegrChat</a>
                 <input id="inputTextarea" class="textarea" type="text" placeholder={this.props.conf.placeholderText}
                        ref={(input) => {
                            this.input = input

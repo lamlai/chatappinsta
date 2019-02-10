@@ -21,6 +21,7 @@ function injectChat() {
         const host = window.location.host || 'unknown-host';
         let conf = { ...defaultConfiguration, ...window.intergramCustomizations };
         conf.urlRequest = urlRequest;
+        conf.isFree = false;
         const iFrameSrc = conf.requestServer + '/chat.html';
 
         axios.get(conf.requestServer+'/website/'+urlRequest)
@@ -54,6 +55,7 @@ function injectChat() {
                                             let data = response.data;
                                             if (data.Code == 200) {
                                                 if (data.Data.isGlobal == true) {
+                                                    conf.isFree = true;
                                                     render(
                                                         <Widget destinationId={window.destinationId}
                                                                 host={host}
@@ -81,6 +83,7 @@ function injectChat() {
                                         let data = response.data;
                                         if (data.Code == 200) {
                                             if (data.Data.isGlobal == true) {
+                                                conf.isFree = true;
                                                 render(
                                                     <Widget destinationId={window.destinationId}
                                                             host={host}
@@ -108,6 +111,7 @@ function injectChat() {
                                     let data = response.data;
                                     if (data.Code == 200) {
                                         if (data.Data.isGlobal == true) {
+                                            conf.isFree = true;
                                             render(
                                                 <Widget destinationId={window.destinationId}
                                                         host={host}

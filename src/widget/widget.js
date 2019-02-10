@@ -119,6 +119,8 @@ export default class Widget extends Component {
 
         let classCloseBtn = (isMobile) ? wrapCloseBtnTitleMobile : hiddenClass;
 
+        console.log(conf)
+
         return (
             <div style={globalStyle}>
                 <div id="wrap-click" style={wrapperStyle} class={isChatOpen ? 'isOpen': ''} data-mobile={isMobile ? 'mobile' : 'desktop'} is-reacted="0">
@@ -154,7 +156,6 @@ export default class Widget extends Component {
                                 </div>
                                 <div id="wrap-text-on-close" style="width:100%; display:none">
                                     <input type="text" style={wrapTextOnCloseInputStyle} placeholder="Trả lời..."/>
-
                                 </div>
                             </div>
 
