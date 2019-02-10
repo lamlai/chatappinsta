@@ -119,8 +119,6 @@ export default class Widget extends Component {
 
         let classCloseBtn = (isMobile) ? wrapCloseBtnTitleMobile : hiddenClass;
 
-        console.log(conf)
-
         return (
             <div style={globalStyle}>
                 <div id="wrap-click" style={wrapperStyle} class={isChatOpen ? 'isOpen': ''} data-mobile={isMobile ? 'mobile' : 'desktop'} is-reacted="0">
