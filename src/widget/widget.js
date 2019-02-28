@@ -117,7 +117,8 @@ export default class Widget extends Component {
 
         const avatar = conf.closedChatAvatarUrl ? conf.closedChatAvatarUrl : 'https://api.telegrchat.com/media/avatar.png';
 
-        let classCloseBtn = wrapCloseBtnTitleMobile ;
+        let classCloseBtn = (isMobile) ? wrapCloseBtnTitleMobile : hiddenClass;
+
 
         return (
             <div style={globalStyle}>
