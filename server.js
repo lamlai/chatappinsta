@@ -23,7 +23,7 @@ app.post('/hook', function (req, res) {
         } else {
             const message = req.body.message || req.body.channel_post;
             const chatId = message.chat.id;
-            const name = message.chat.first_name + ' ' + message.chat.last_name || message.chat.title || 'admin';
+            const name = message.from.first_name + ' ' + message.from.last_name || message.chat.title || 'admin';
             const text = message.text || '';
             const reply = message.reply_to_message;
             if (text.startsWith('/start')) {
@@ -94,7 +94,12 @@ io.on('connection', function (client) {
                     }
                     messageReceived = true;
                     io.emit(chatId + '-' + userId, msg);
-                    sendTelegramMessage(chatId, userId+' - *'+visitorName+'*' + ': ' + msg.text, 'Markdown');
+                    if (visitorName != userId) {
+                        sendTelegramMessage(chatId, userId+' - *'+visitorName+'*' + ': ' + msg.text, 'Markdown');
+                    } else {
+                        sendTelegramMessage(chatId, userId+': ' + msg.text, 'Markdown');
+                    }
+
                 })
             }
 
