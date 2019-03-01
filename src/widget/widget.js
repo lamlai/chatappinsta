@@ -83,7 +83,7 @@ export default class Widget extends Component {
             }
 
         }
-        document.getElementById('close-btn-mobile').onclick = function () {
+        document.getElementById('wrap-click').onclick = function () {
             checkElement.setAttribute('is-reacted', '1')
         }
 
