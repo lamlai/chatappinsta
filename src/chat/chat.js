@@ -37,7 +37,7 @@ export default class Chat extends Component {
 
     }
 
-    render({}, state) {
+    render({conf}, state) {
         const iconPaperPlan = faFreeRegular.faPaperPlane;
         const paperPlan = icon(iconPaperPlan);
         const iconPaperClip = faFreeSolid.faPaperclip;
@@ -53,12 +53,14 @@ export default class Chat extends Component {
                            this.input = input
                        }}
                        onKeyPress={this.handleKeyPress}/>
-
+                {(conf.isFree === false) ?
                 <label class="btn-send-file">
                     <span dangerouslySetInnerHTML={{__html: paperClip.html}}></span>
                     <input class="hidden" onChange={this.handleUploadFileChat} type="file" name="uploadFileChat"/>
                 </label>
-
+                    :
+                <label></label>
+                }
                 <span class="btn-send-message" onClick={this.handleSendMessageClick}
                       dangerouslySetInnerHTML={{__html: paperPlan.html}}></span>
                 <div class="background-bottom-input-area"/>

@@ -8,7 +8,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const {Customer, Website, Config} = require('./sequelize')
 const date = require('date-and-time');
-const fs = require('fs');
+const fs = require('fs-extra');
+const progress = require('request-progress');
 require('dotenv').config()
 
 app.use(express.static('dist', {index: 'demo.html', maxage: '4h'}));
@@ -24,20 +25,65 @@ app.post('/hook', function (req, res) {
             const message = req.body.message || req.body.channel_post;
             const chatId = message.chat.id;
             const name = message.from.first_name + ' ' + message.from.last_name || message.chat.title || 'admin';
-            const text = message.text || '';
+            let text = message.text || '';
             const reply = message.reply_to_message;
-            if (text.startsWith('/start')) {
-                console.log('/start chatId ' + chatId);
-                sendTelegramMessage(chatId,
-                    '*Welcome to ASC Chat* \n' +
-                    'Your unique chat id is `' + chatId + '`',
-                    'Markdown');
-            } else if (reply) {
-                let replyText = reply.text || '';
-                let userId = replyText.split(':')[0];
-                userId = userId.split(' - ')[0];
-                io.emit(chatId + '-' + userId, {name, text, from: 'admin'});
+            let arrMineTypeImage = ['image/jpeg', 'image/png'];
+            if ((message.document && arrMineTypeImage.indexOf(message.document.mime_type) ) || message.photo ) {
+                let fileId;
+                if (message.photo) {
+                    fileId = message.photo[3].file_id
+                } else {
+                    fileId = message.document.file_id
+                }
+
+                let urlGetFile =  'https://api.telegram.org/bot' + process.env.TELEGRAM_TOKEN + '/getFile?file_id=' + fileId
+                    request
+                        .get({url: urlGetFile},
+                            function (error, response, body){
+                            body = JSON.parse(body)
+                            if (body.ok) {
+                                let filePath = body.result.file_path;
+                                let fileName = filePath.replace('documents/' , '');
+                                let now = new Date();
+                                fileName = fileName.replace('photos/' , '');
+                                let newUrlImage = 'https://api.telegram.org/file/bot' + process.env.TELEGRAM_TOKEN + '/' + filePath;
+                                fileName = date.format(now, 'YYYYMMDDHHmmss') + '_' + fileName;
+                                const savedFile = `${__dirname}/media/upload/${fileName}`;
+                                downloadImage(newUrlImage, savedFile, function (state) {}, function (response) {}, function (error) {
+                                }, function () {
+                                    fs.copy(savedFile, __dirname + '/dist/media/upload/' + fileName)
+                                        .then(() => {
+                                            if (reply) {
+                                                let fullImageUrlOwnHost = process.env.HOST+ '/media/upload/' + fileName;
+                                                let replyText = reply.text || '';
+                                                let userId = replyText.split(':')[0];
+                                                userId = userId.split(' - ')[0];
+                                                let imageRender = '<br><img src="'+fullImageUrlOwnHost+'">';
+                                                text += imageRender;
+                                                io.emit(chatId + '-' + userId, {name, text, from: 'admin'});
+                                            }
+
+                                        })
+                                        .catch(err => console.error(err));
+                                })
+                            }
+                        })
+
+            } else {
+                if (text.startsWith('/start')) {
+                    console.log('/start chatId ' + chatId);
+                    sendTelegramMessage(chatId,
+                        '*Welcome to ASC Chat* \n' +
+                        'Your unique chat id is `' + chatId + '`',
+                        'Markdown');
+                } else if (reply) {
+                    let replyText = reply.text || '';
+                    let userId = replyText.split(':')[0];
+                    userId = userId.split(' - ')[0];
+                    io.emit(chatId + '-' + userId, {name, text, from: 'admin'});
+                }
             }
+
         }
 
     } catch (e) {
@@ -180,6 +226,30 @@ function handleUpdateStatusBillForWeb(data) {
         })
 }
 
+function downloadImage (uri, path, onProgress, onResponse, onError, onEnd) {
+    progress(request(uri))
+        .on('progress', onProgress)
+        .on('response', onResponse)
+        .on('error', onError)
+        .on('end', onEnd)
+        .pipe(fs.createWriteStream(path))
+};
+
+function copyFile(source, target) {
+    var rd = fs.createReadStream(source);
+    var wr = fs.createWriteStream(target);
+    return new Promise(function(resolve, reject) {
+        rd.on('error', reject);
+        wr.on('error', reject);
+        wr.on('finish', resolve);
+        rd.pipe(wr);
+    }).catch(function(error) {
+        rd.destroy();
+        wr.end();
+        throw error;
+    });
+}
+
 app.post('/usage-start', function (req, res) {
     console.log('usage from', req.query.host);
     res.statusCode = 200;
@@ -270,7 +340,6 @@ app.post('/customer/upload/:domain/:customer_id', (req, res, next) => {
                         if (err) {
                             return res.status(500).send(err)
                         } else {
-                            console.log(savedFile);
                             const sendImage = sendTelegramFile(chatId, savedFile, customerId ,customerName)
                             res.json({
                                 file: savedFile,

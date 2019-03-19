@@ -48,6 +48,7 @@
     "cors": "^2.8.1",
     "date-and-time": "^0.6.3",
     "dateformat": "^2.0.0",
+    "detect-browser": "^4.0.3",
     "dotenv": "^6.1.0",
     "eslint": "^3.2.2",
     "express": "^4.16.4",
@@ -56,6 +57,7 @@
     "font-awesome-webpack": "0.0.5-beta.2",
     "form-data": "^2.3.3",
     "fs": "0.0.1-security",
+    "fs-extra": "^7.0.1",
     "i": "^0.3.6",
     "less": "^3.9.0",
     "moment": "^2.23.0",
@@ -66,13 +68,13 @@
     "pg-hstore": "^2.3.2",
     "preact": "^7.1.0",
     "react-icons": "^3.2.2",
+    "request-progress": "^3.0.0",
     "sequelize": "^4.41.2",
     "shx": "^0.2.2",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
     "socket.io-file": "^2.0.3",
     "store": "^1.3.20",
-    "webpack": "^1.14.0",
-    "detect-browser": "^4.0.3"
+    "webpack": "^1.14.0"
   }
 }
